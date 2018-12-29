@@ -1,0 +1,9 @@
+[submodule "packer/boxcutter/ubuntu"]
+	path = packer/boxcutter/ubuntu
+	url = git@github.com:boxcutter/ubuntu.git
+[submodule "packer/boxcutter/fedora"]
+	path = packer/boxcutter/fedora
+	url = git@github.com:boxcutter/fedora.git
+[submodule "packer/boxcutter/debian"]
+	path = packer/boxcutter/debian
+	url = git@github.com:boxcutter/debian.git
