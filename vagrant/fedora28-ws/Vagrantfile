@@ -1,12 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-image = "ubuntu1804-desktop"
+image = "fedora28-ws"
 
 Vagrant.configure("2") do |config|
     config.vm.define "vagrant-#{image}"
     config.vm.box = "#{image}"
-    config.vm.box_url = "../../boxes/ubuntu/vmware/#{image}-0.1.0.box"
+    config.vm.box_url = "../../boxes/fedora/vmware/#{image}-0.1.0.box"
 
     config.vm.provider :vmware_desktop do |v, override|
       v.gui = true
@@ -17,6 +17,7 @@ Vagrant.configure("2") do |config|
       v.vmx["RemoteDisplay.vnc.port"] = "5900"
       v.vmx["scsi0.virtualDev"] = "lsilogic"
       v.vmx["mks.enable3d"] = "TRUE"
+      v.vmx["ethernet0.pcislotnumber"] = "33"
       v.vmx["virtualhw.version"] = "16"
     end
 end
