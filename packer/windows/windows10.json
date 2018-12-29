@@ -1,0 +1,89 @@
+{
+    "_comment": "Build with `packer build windows10.json`",
+    "builders": [
+        {
+            "type": "vmware-iso",
+            "vm_name": "{{ user `vm_name` }}",
+            "iso_url": "{{user `iso_url`}}",
+            "iso_checksum_type": "{{user `iso_checksum_type`}}",
+            "iso_checksum": "{{user `iso_checksum`}}",
+            "headless": "{{user `headless`}}",
+            "boot_wait": "2m",
+            "communicator": "ssh",
+            "ssh_username": "vagrant",
+            "ssh_password": "vagrant",
+            "ssh_wait_timeout": "2h",
+            "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+            "guest_os_type": "windows9-64",
+            "tools_upload_flavor": "windows",
+            "tools_upload_path": "C:/Windows/Temp/windows.iso",
+            "disk_size": "{{user `disk_size`}}",
+            "disk_adapter_type": "lsisas1068",
+            "vnc_port_min": 5900,
+            "vnc_port_max": 5980,
+            "cpus": "{{user `cpus`}}",
+            "memory": "{{user `memory_size`}}",
+            "version": 16,
+            "floppy_files": [
+                "{{user `autounattend`}}",
+                "./scripts/fixnetwork.ps1",
+                "./scripts/microsoft-updates.ps1",
+                "./scripts/win-updates.ps1",
+                "./scripts/openssh.ps1"
+            ],
+            "vmx_data": {
+                "mks.enable3d": "TRUE"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "powershell",
+            "execute_command": "powershell -executionpolicy bypass \"& { if (Test-Path variable:global:ProgressPreference){\\$ProgressPreference='SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit \\$LastExitCode }\"",
+            "environment_vars": [
+                "VS2017_BUILDTOOLS={{user `vs2017_buildtools`}}",
+                "VS2017={{user `vs2017`}}"
+            ],
+            "scripts": [
+                "./scripts/vm-guest-tools.ps1",
+                "./scripts/configure-winrm.ps1",
+                "./scripts/vagrant-ssh.ps1",
+                "./scripts/chocolatey.ps1",
+                "./scripts/visualstudio.ps1",
+                "./scripts/compile-dotnet-assemblies.ps1"
+            ]
+        },
+        {
+            "type": "windows-restart"
+        },
+        {
+            "type": "powershell",
+            "execute_command": "powershell -executionpolicy bypass \"& { if (Test-Path variable:global:ProgressPreference){\\$ProgressPreference='SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit \\$LastExitCode }\"",
+            "scripts": [
+                "./scripts/disable-auto-logon.ps1",
+                "./scripts/compact.ps1"
+            ]
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "output": "box/{{.Provider}}/{{user `vm_name`}}-{{user `version`}}.box",
+            "vagrantfile_template": "./vagrant_files/windows10/vagrantfile.template"
+        }
+    ],
+    "variables": {
+        "iso_url": "./iso/en-gb_windows_10_business_edition_version_1803_updated_sep_2018_x64_dvd_472941f3.iso",
+        "iso_checksum_type": "sha1",
+        "iso_checksum": "107806F418FAD692645FB0043F9F2638D7E0635B",
+        "autounattend": "./answer_files/windows10/Autounattend.xml",
+        "headless": "false",
+        "cpus": "2",
+        "memory_size": "2048",
+        "disk_size": "61440",
+        "vs2017": "false",
+        "vs2017_buildtools": "false",
+        "version": "0.1.0",
+        "vm_name": "windows10"
+    }
+}

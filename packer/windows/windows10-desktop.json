@@ -1,0 +1,13 @@
+{
+    "_comment": "Build with `packer build -var-file=windows10-desktop.json windows10.json`",
+    "iso_url": "./iso/en-gb_windows_10_business_editions_version_1809_updated_dec_2018_x64_dvd_71601304.iso",
+    "iso_checksum_type": "sha1",
+    "iso_checksum": "D3701313888FB204FF9B31E7479386301A80D3A2",
+    "autounattend": "./answer_files/windows10/Autounattend.xml",
+    "headless": "false",
+    "cpus": "2",
+    "memory_size": "4096",
+    "disk_size": "61440",
+    "version": "0.1.0",
+    "vm_name": "windows10-desktop"
+}
