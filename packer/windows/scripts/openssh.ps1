@@ -1,5 +1,5 @@
 param (
-  [switch]$AutoStart = $false
+    [switch]$AutoStart = $false
 )
 
 Write-Output "AutoStart: $AutoStart"
@@ -7,7 +7,7 @@ $is_64bit = [IntPtr]::size -eq 8
 
 if (!(Test-Path "C:\Program Files\OpenSSH\bin\ssh.exe")) {
     # setup openssh
-    $ssh_download_url = "http://www.mls-software.com/files/setupssh-7.1p1-1.exe"
+    $ssh_download_url = "https://www.mls-software.com/files/setupssh-8.0p1-2.exe"
     $ssh_exe = "$env:windir\Temp\openssh.exe"
 
     Write-Output "Downloading $ssh_download_url"
@@ -31,9 +31,9 @@ C:\Windows\System32\icacls.exe "C:\Program Files\OpenSSH\bin" /grant "vagrant:(O
 C:\Windows\System32\icacls.exe "C:\Program Files\OpenSSH\usr\sbin" /grant "vagrant:(OI)RX"
 
 Write-Output "Setting SSH home directories"
-    (Get-Content "C:\Program Files\OpenSSH\etc\passwd") |
-    Foreach-Object { $_ -replace '/home/(\w+)', '/cygdrive/c/Users/$1' } |
-    Set-Content 'C:\Program Files\OpenSSH\etc\passwd'
+(Get-Content "C:\Program Files\OpenSSH\etc\passwd") |
+Foreach-Object { $_ -replace '/home/(\w+)', '/cygdrive/c/Users/$1' } |
+Set-Content 'C:\Program Files\OpenSSH\etc\passwd'
 
 # Set shell to /bin/sh to return exit status
 $passwd_file = Get-Content 'C:\Program Files\OpenSSH\etc\passwd'

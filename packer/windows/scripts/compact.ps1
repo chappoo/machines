@@ -6,7 +6,7 @@ function CheckAndDownload() {
 
     if (-not (Test-Path -Path $FilePath)) {
         $webclient = New-Object System.Net.WebClient
-        $webclient.DownloadFile($DownloadUrl,$FilePath)
+        $webclient.DownloadFile($DownloadUrl, $FilePath)
     }
 }
 
@@ -26,9 +26,9 @@ Write-Host "Stopped service: wuauserv"
 Remove-Item -Path "$env:windir\SoftwareDistribution\Download" -Recurse -Force
 New-Item -Path "$env:windir\SoftwareDistribution\Download" -ItemType Directory
 
-Write-Host "Starting service: wuauserv"
-Start-Service -Name wuauserv
-Write-Host "Started service: wuauserv"
+# Write-Host "Starting service: wuauserv"
+# Start-Service -Name wuauserv
+# Write-Host "Started service: wuauserv"
 
 Start-Process -FilePath "cmd" -ArgumentList "/c $env:windir\Temp\ultradefrag-portable-6.1.0.amd64\udefrag.exe --optimize --repeat C:" -NoNewWindow -Wait
 

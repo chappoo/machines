@@ -26,10 +26,7 @@
             "version": 16,
             "floppy_files": [
                 "{{user `autounattend`}}",
-                "./scripts/fixnetwork.ps1",
-                "./scripts/microsoft-updates.ps1",
-                "./scripts/win-updates.ps1",
-                "./scripts/openssh.ps1"
+                "./scripts/Autounattend.ps1"
             ],
             "vmx_data": {
                 "mks.enable3d": "TRUE"
@@ -39,16 +36,13 @@
     "provisioners": [
         {
             "type": "powershell",
-            "execute_command": "powershell -executionpolicy bypass \"& { if (Test-Path variable:global:ProgressPreference){\\$ProgressPreference='SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit \\$LastExitCode }\"",
             "environment_vars": [
                 "VS2017_BUILDTOOLS={{user `vs2017_buildtools`}}",
                 "VS2017={{user `vs2017`}}"
             ],
             "scripts": [
                 "./scripts/vm-guest-tools.ps1",
-                "./scripts/configure-winrm.ps1",
                 "./scripts/vagrant-ssh.ps1",
-                "./scripts/chocolatey.ps1",
                 "./scripts/visualstudio.ps1",
                 "./scripts/compile-dotnet-assemblies.ps1"
             ]
@@ -58,7 +52,6 @@
         },
         {
             "type": "powershell",
-            "execute_command": "powershell -executionpolicy bypass \"& { if (Test-Path variable:global:ProgressPreference){\\$ProgressPreference='SilentlyContinue'};. {{.Vars}}; &'{{.Path}}'; exit \\$LastExitCode }\"",
             "scripts": [
                 "./scripts/disable-auto-logon.ps1",
                 "./scripts/compact.ps1"
