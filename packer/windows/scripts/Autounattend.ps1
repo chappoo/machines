@@ -4,8 +4,8 @@ Write-Host "Install Chocolatey"
 $env:chocolateyVersion = '0.10.15'
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-Write-Host "Install Chef Client"
-choco install chef-client -y --version 15.0.300
+# Write-Host "Install Chef Client"
+# choco install chef-client -y --version 15.0.300
 
 Write-Host "Install 7zip"
 choco install 7zip.portable -y --version 19.0
